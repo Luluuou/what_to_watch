@@ -18,5 +18,18 @@ class OpinionForm(FlaskForm):
         validators=[Length(1, 256), Optional()]
     )
     # Добавьте новое поле в форму.
-    images = MultipleFileField()
+     images = MultipleFileField(
+        validators=[
+            FileAllowed(
+                # Список разрешенных расширений для файлов.
+                ['jpg', 'jpeg', 'png', 'gif', 'bmp'], 
+                # Сообщение, в случае если расширение не совпадает.
+                message=(
+                    'Выберите файлы с расширением '
+                    '.jpg, .jpeg, .png, .gif или .bmp'
+                )
+            )
+        ]
+    ) 
     submit = SubmitField('Добавить') 
+    
