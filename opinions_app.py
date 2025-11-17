@@ -32,5 +32,9 @@ def index_view():
     # Передать в шаблон весь объект opinion.
     return render_template('index.html', opinion=opinion)
 
+@app.route('/add')
+def add_opinion_view():
+    return 'Страница в разработке!'
+
 if __name__ == '__main__':
     app.run()
