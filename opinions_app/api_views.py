@@ -38,3 +38,17 @@ def delete_opinion(id):
     db.session.commit()
     # При удалении принято возвращать только код ответа 204.
     return '', 204   
+
+@app.route('/api/opinions/', methods=['POST'])
+def add_opinion():
+    # Получить данные из запроса в виде словаря.
+    data = request.get_json()
+    # Создать новый пустой экземпляр модели.
+    opinion = Opinion()
+    # Наполнить экземпляр данными из запроса.
+    opinion.from_dict(data)
+    # Добавить новую запись в сессию.
+    db.session.add(opinion)
+    # Сохранить изменения.
+    db.session.commit()
+    return jsonify({'opinion': opinion.to_dict()}), 201 
