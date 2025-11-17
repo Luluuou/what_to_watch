@@ -5,10 +5,14 @@ from flask import jsonify, request
 from . import app, db
 from .models import Opinion
 
-@app.route('/api/opinions/<int:id>/', methods=['GET'])
-def get_opinion(id):
-    opinion = Opinion.query.get_or_404(id)
-    return jsonify({'opinion': opinion.to_dict()}), 200
+@app.route('/api/opinions/', methods=['GET'])
+def get_opinions():
+    # Запросить список объектов.
+    opinions = Opinion.query.all()
+    # Поочерёдно сериализовать каждый объект,
+    # а потом все объекты поместить в список opinions_list.
+    opinions_list = [opinion.to_dict() for opinion in opinions]
+    return jsonify({'opinions': opinions_list}), 200 
 
 @app.route('/api/opinions/<int:id>/', methods=['PATCH'])
 def update_opinion(id):
@@ -26,3 +30,11 @@ def update_opinion(id):
     db.session.commit()  
     # При изменении объекта нужно вернуть сам объект и код 200.
     return jsonify({'opinion': opinion.to_dict()}), 200
+
+@app.route('/api/opinions/<int:id>/', methods=['DELETE'])
+def delete_opinion(id):
+    opinion = Opinion.query.get_or_404(id)
+    db.session.delete(opinion)
+    db.session.commit()
+    # При удалении принято возвращать только код ответа 204.
+    return '', 204   
