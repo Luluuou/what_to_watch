@@ -10,6 +10,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, TextAreaField, URLField
 from wtforms.validators import DataRequired, Length, Optional
 
+from flask_migrate import Migrate
 
 app = Flask(__name__)
 
@@ -17,6 +18,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
 app.config['SECRET_KEY'] = 'MY SECRET KEY'
 
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 
 class Opinion(db.Model):
